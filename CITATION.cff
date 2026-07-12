@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "Reproducible Evaluation of Automated Sleep Staging"
+type: software
+version: 0.1.0
+authors:
+  - family-names: Agafonova
+    given-names: Daria
+repository-code: "https://github.com/viranovskaya/sleep-eeg-staging-evaluation"
+license: MIT
