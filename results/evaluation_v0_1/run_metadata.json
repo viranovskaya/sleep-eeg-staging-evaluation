@@ -1,0 +1,50 @@
+{
+  "subjects": [
+    4,
+    8,
+    11,
+    19,
+    21,
+    22,
+    23,
+    31,
+    33,
+    34,
+    38,
+    43,
+    61,
+    62,
+    63,
+    64,
+    66,
+    67,
+    74,
+    81
+  ],
+  "recording": 1,
+  "primary_edge_wake_minutes": 30,
+  "sensitivity_edge_wake_minutes": [
+    0,
+    30,
+    60,
+    "all"
+  ],
+  "stages": [
+    "W",
+    "N1",
+    "N2",
+    "N3",
+    "REM"
+  ],
+  "bootstrap_seed": 20260713,
+  "bootstrap_resamples": 2000,
+  "python": "3.13.7",
+  "packages": {
+    "mne": "1.12.1",
+    "yasa": "0.7.0",
+    "pandas": "2.3.3",
+    "numpy": "2.4.6",
+    "scikit-learn": "1.9.0",
+    "lightgbm": "4.6.0"
+  }
+}

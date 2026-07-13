@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
+import platform
+from importlib.metadata import version
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 os.environ.setdefault("_MNE_FAKE_HOME_DIR", str(PROJECT_ROOT))
+os.environ.setdefault("MNE_DONTWRITE_HOME", "true")
 os.environ.setdefault("MPLCONFIGDIR", str(PROJECT_ROOT / ".matplotlib"))
 os.environ.setdefault("XDG_CACHE_HOME", str(PROJECT_ROOT / ".cache"))
 
@@ -35,6 +39,7 @@ STAGE_MAP = {
 STAGE_ORDER = ["W", "N1", "N2", "N3", "REM"]
 EDGE_WAKE_MINUTES = 30
 BOOTSTRAP_SEED = 20260713
+BOOTSTRAP_RESAMPLES = 2000
 
 
 def annotation_table(raw: mne.io.BaseRaw) -> pd.DataFrame:
@@ -124,7 +129,7 @@ def _stage_metrics(aligned: pd.DataFrame, subject: int, recording: int) -> pd.Da
 
 def _bootstrap_recording_means(
     metrics: pd.DataFrame,
-    n_bootstrap: int = 2000,
+    n_bootstrap: int = BOOTSTRAP_RESAMPLES,
     seed: int = BOOTSTRAP_SEED,
 ) -> pd.DataFrame:
     rng = np.random.default_rng(seed)
@@ -317,6 +322,33 @@ def run(
     sensitivity.to_csv(output_dir / "edge_wake_sensitivity.csv", index=False)
     report.to_csv(output_dir / "pooled_classification_report.csv")
     confusion.to_csv(output_dir / "pooled_confusion_matrix.csv")
+    metadata = {
+        "subjects": subjects,
+        "recording": recording,
+        "primary_edge_wake_minutes": edge_wake_minutes,
+        "sensitivity_edge_wake_minutes": [
+            "all" if edge is None else edge for edge in sensitivity_edges
+        ],
+        "stages": STAGE_ORDER,
+        "bootstrap_seed": BOOTSTRAP_SEED,
+        "bootstrap_resamples": BOOTSTRAP_RESAMPLES,
+        "python": platform.python_version(),
+        "packages": {
+            package: version(package)
+            for package in [
+                "mne",
+                "yasa",
+                "pandas",
+                "numpy",
+                "scikit-learn",
+                "lightgbm",
+            ]
+        },
+    }
+    (output_dir / "run_metadata.json").write_text(
+        json.dumps(metadata, indent=2) + "\n",
+        encoding="utf-8",
+    )
     print(metrics.to_string(index=False))
     print("\nPooled confusion matrix")
     print(confusion.to_string())
