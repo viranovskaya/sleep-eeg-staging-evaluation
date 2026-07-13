@@ -2,13 +2,15 @@
 
 Automatic sleep staging is useful, but a single accuracy value does not show where the model fails. In this project I compare YASA sleep-stage predictions with expert annotations from the open Sleep-EDF Expanded dataset. I also started a second analysis of EEG spectral power across the expert-scored stages.
 
-## First results
+## Results
 
-The first run includes two recordings and 1,944 scored 30-second epochs. Pooled accuracy was 0.814, balanced accuracy 0.779, Cohen's kappa 0.750, and macro F1 0.770. N1 was the most difficult stage (F1 = 0.511).
+The fixed evaluation set contains 20 recordings and 28,259 aligned 30-second epochs. Across recordings, mean balanced accuracy was 0.706 (95% bootstrap CI 0.670–0.739), Cohen's kappa was 0.674 (0.622–0.726), and macro F1 was 0.630 (0.582–0.680).
 
-These two recordings were enough to check the pipeline and find the main disagreement pattern, but they are not a population sample.
+N1 was the main source of disagreement: pooled recall was 0.155 and F1 was 0.239. Most expert N1 epochs were predicted as N2 or Wake.
 
-![Row-normalized confusion matrix](results/pooled_confusion_matrix.png)
+![Row-normalized confusion matrix](results/evaluation_v0_1/pooled_confusion_matrix.png)
+
+The complete tables, sensitivity analysis, and limitations are in the [20-recording results note](docs/evaluation_results_v0_1.md). The earlier [two-recording pilot](docs/mvp_results.md) remains separate because it was used while building the pipeline.
 
 ## Research questions
 
@@ -17,9 +19,7 @@ These two recordings were enough to check the pipeline and find the main disagre
 
 ## Status
 
-The two-recording staging run is complete. The spectral code is implemented and tested, but I have not yet reviewed and added its generated results. The next staging step is the locked 20-recording evaluation described in [`docs/evaluation_protocol_v0_1.md`](docs/evaluation_protocol_v0_1.md).
-
-The full numbers are in [the first results note](docs/mvp_results.md). The spectral method is described [separately](docs/spectral_analysis.md).
+The locked 20-recording staging evaluation is complete. It includes per-recording metrics, recording-level bootstrap uncertainty, stage-level results, and an edge-Wake sensitivity analysis. The spectral code is implemented and tested, but its generated results have not yet been added to the reviewed outputs.
 
 ## Data
 
@@ -37,7 +37,7 @@ I use Sleep-EDF Database Expanded, PhysioNet, version 1.0.0. The scripts downloa
 
 ```text
 src/                 Analysis code
-results/             Reviewed staging outputs; ignored spectral outputs
+results/             Pilot and 20-recording staging outputs
 docs/                Protocol, methods, results, and limitations
 config/              Fixed evaluation sample manifests
 data/                 Downloaded source data (never committed)
@@ -50,11 +50,16 @@ data/                 Downloaded source data (never committed)
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-python src/run_mvp.py --subjects 0 1 --recording 1 --output-dir results --data-dir data
-python src/make_figures.py --results-dir results
+python src/run_mvp.py \
+  --sample-manifest config/evaluation_sample_v0_1.csv \
+  --sample-split evaluation \
+  --recording 1 \
+  --output-dir results/evaluation_v0_1 \
+  --data-dir data
+python src/make_figures.py --results-dir results/evaluation_v0_1
 ```
 
-On macOS, LightGBM also requires OpenMP (`brew install libomp`). The first analysis command downloads approximately 100 MB of source EDF files from PhysioNet.
+On macOS, LightGBM also requires OpenMP (`brew install libomp`). The analysis command downloads the selected source EDF files from PhysioNet if they are not already present.
 
 To run the unit tests, install `requirements-dev.txt` and use `python -m pytest`.
 
