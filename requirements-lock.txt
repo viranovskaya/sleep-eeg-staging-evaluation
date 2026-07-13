@@ -1,4 +1,4 @@
-# Exact environment used for the v0.1 evaluation run.
+# Exact environment used for the 20-recording evaluation run.
 antropy==0.2.2
 certifi==2026.6.17
 charset-normalizer==3.4.9

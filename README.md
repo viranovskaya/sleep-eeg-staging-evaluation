@@ -49,7 +49,7 @@ python src/make_figures.py --results-dir results/evaluation_v0_1
 
 On macOS, LightGBM also requires OpenMP (`brew install libomp`). The first run downloads the selected files from PhysioNet.
 
-`requirements.txt` gives the supported package ranges. `requirements-lock.txt` records the exact environment used for the saved v0.1 results.
+`requirements.txt` gives the supported package ranges. `requirements-lock.txt` records the exact environment used for the saved 20-recording results.
 
 Tests:
 

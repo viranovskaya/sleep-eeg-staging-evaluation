@@ -42,6 +42,6 @@ Ordinary accuracy is included for comparison but is not the main measure because
 
 I also reran the metrics with 0, 30 and 60 minutes of edge Wake, and with all scored Wake.
 
-## Version 0.1.0
+## Frozen 20-recording evaluation
 
-The first release will include the sample manifest, per-recording and pooled tables, uncertainty and edge-Wake results, figures, tests, input checksums, a frozen environment and this record of the analysis choices. A Zenodo archive can be made after the release has been checked on GitHub.
+This is the first frozen larger-sample evaluation in the repository. The files keep `evaluation_v0_1` as the analysis label; the GitHub release is v0.3.0. It includes the sample manifest, per-recording and pooled tables, uncertainty and edge-Wake results, figures, tests, input checksums, the exact environment and this record of the analysis choices. After I have checked the release on GitHub, I can archive it on Zenodo.
