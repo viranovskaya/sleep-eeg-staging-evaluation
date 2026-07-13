@@ -1,57 +1,47 @@
-# Evaluation protocol for v0.1.0
+# Staging evaluation: sample and analysis choices
 
-Locked on 2026-07-13, before running the larger evaluation.
+I fixed the sample and the main analysis choices on 13 July 2026, before running the 20-recording comparison.
 
-## Dataset
+## Sample
 
-I use the Sleep-EDF Expanded age subset through MNE/PhysioNet. Raw EDF files are downloaded by the analysis scripts and are not stored in the repository.
+I started from subject IDs 0–82 in the Sleep-EDF age subset and used recording 1. Subjects 36 and 52 do not have that recording. Subjects 39, 68, 69, 78 and 79 are not available in the MNE Sleep-EDF age registry, so these seven IDs were removed before sampling.
 
-The first two recordings, subjects 0 and 1 with recording 1, stay as the development sample. I already used them to check loading, annotation mapping, epoch alignment, and figure generation, so they are not part of the next evaluation set.
-
-## Locked evaluation sample
-
-The v0.1.0 evaluation uses recording 1 from these 20 subjects:
+I drew 20 subjects without replacement using Python's `random.Random(20260713)`, then sorted the selected IDs:
 
 `4, 8, 11, 19, 21, 22, 23, 31, 33, 34, 38, 43, 61, 62, 63, 64, 66, 67, 74, 81`
 
-The sample is saved in [`config/evaluation_sample_v0_1.csv`](../config/evaluation_sample_v0_1.csv). If a selected record fails to download or process, I will keep the row in the manifest and add the reason instead of silently replacing it.
+The list is stored in [`config/evaluation_sample_v0_1.csv`](../config/evaluation_sample_v0_1.csv), and a test recreates it from the rule above. Subjects 0 and 1 were already used while I was building and checking the pipeline. They happened not to be drawn and remain marked as the development sample.
 
-## Primary analysis
+The selected subjects had a mean age of 62.9 years (SD 24.6, range 25--101); 13 were female and 7 male. Age and sex come from the Sleep-EDF age-study records and are stored in the manifest. They describe the evaluation sample but were not supplied to the classifier.
 
-- Five-stage comparison: Wake, N1, N2, N3, REM.
-- Historical stage 4 annotations are merged into N3.
-- Movement and unscored epochs are excluded.
-- Expert and predicted labels are aligned by 30-second epoch index.
-- The primary window keeps sleep plus 30 minutes of Wake on both sides.
+All 20 selected recordings were processed. No subject was replaced after the results were seen.
 
-Primary metrics:
+## Stage mapping and evaluation window
 
-- balanced accuracy;
+- Wake, N1, N2, N3 and REM are compared.
+- Historical R&K stages 3 and 4 are combined as N3.
+- Movement and unscored annotations are left out of the metrics.
+- Every retained expert epoch must have a prediction at the same 30-second epoch index. The analysis stops if one is missing.
+- The main window starts 30 minutes before the first expert-scored sleep epoch and ends 30 minutes after the last one.
+
+YASA receives the Fpz-Cz EEG derivation and horizontal EOG. No EMG or participant metadata are passed to the model.
+
+The edge-Wake rule avoids giving too much weight to long, easy Wake periods at the beginning and end of a record.
+
+## Metrics
+
+Metrics are calculated separately for each recording and then averaged across recordings.
+
+- `balanced_accuracy_present_stages`: mean recall over stages that occur in the expert annotation for that recording;
+- `macro_recall_5_stages`: mean recall over Wake, N1, N2, N3 and REM, with zero for an absent stage;
 - Cohen's kappa;
-- macro F1;
-- stage-level precision, recall, F1, and support.
+- macro F1 over the fixed five-stage set;
+- stage-level precision, recall, F1 and support.
 
-Accuracy is reported as a supporting metric, not as the main result, because the class distribution is uneven.
+Ordinary accuracy is included for comparison but is not the main measure because the stage distribution is uneven. The 95% intervals are percentile bootstrap intervals over recordings, using 2,000 resamples and seed `20260713`.
 
-## Uncertainty and sensitivity
+I also reran the metrics with 0, 30 and 60 minutes of edge Wake, and with all scored Wake.
 
-I will report per-recording metrics before pooling. Group summaries will use recordings as the uncertainty unit, not individual 30-second epochs as independent participants.
+## Version 0.1.0
 
-Planned sensitivity checks:
-
-- epoch-weighted pooled metrics versus unweighted mean across recordings;
-- edge-Wake window of 0, 30, 60 minutes, and all scored Wake;
-- explicit flags for any zero-support stage in a recording.
-
-## Release gate
-
-Before tagging `v0.1.0`, the repository should contain:
-
-- the fixed sample manifest;
-- per-recording and pooled result tables;
-- uncertainty and sensitivity tables;
-- reviewed figures;
-- passing unit tests and CI;
-- a short results note that separates the two-recording MVP from the 20-recording evaluation.
-
-Zenodo DOI comes after the reviewed `v0.1.0` release, not before.
+The first release will include the sample manifest, per-recording and pooled tables, uncertainty and edge-Wake results, figures, tests, input checksums, a frozen environment and this record of the analysis choices. A Zenodo archive can be made after the release has been checked on GitHub.
