@@ -1,0 +1,113 @@
+{
+  "project": "sleep-eeg-staging-evaluation",
+  "analysis": "yasa-versus-expert-five-stage-evaluation",
+  "run_utc": "2026-07-13T20:17:31.445685+00:00",
+  "dataset": {
+    "name": "Sleep-EDF Database Expanded",
+    "subset": "Sleep Cassette age study",
+    "version": "1.0.0",
+    "url": "https://physionet.org/content/sleep-edfx/1.0.0/"
+  },
+  "sample": {
+    "subjects": [
+      0,
+      1
+    ],
+    "recording": 1,
+    "manifest": "config/evaluation_sample_v0_1.csv",
+    "manifest_sha256": "73af4684a90ea45c24b5d758dabb327f04994f6d9081bb512d51c4e0835fe595",
+    "split": "development",
+    "demographics": {
+      "n": 2,
+      "age_mean": 33.0,
+      "age_sd": 0.0,
+      "age_range": [
+        33.0,
+        33.0
+      ],
+      "sex_counts": {
+        "female": 2
+      }
+    }
+  },
+  "input_files": [
+    {
+      "subject": 0,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4001E0-PSG.edf",
+        "sha1": "adabd3b01fc7bb75c523a974f38ee3ae4e57b40f",
+        "size_bytes": 48338048
+      },
+      "hypnogram": {
+        "filename": "SC4001EC-Hypnogram.edf",
+        "sha1": "21c998eadc8b1e3ea6727d3585186b8f76e7e70b",
+        "size_bytes": 4620
+      }
+    },
+    {
+      "subject": 1,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4011E0-PSG.edf",
+        "sha1": "4d17451f7847355bcab17584de05e7e1df58c660",
+        "size_bytes": 51110528
+      },
+      "hypnogram": {
+        "filename": "SC4011EH-Hypnogram.edf",
+        "sha1": "d582a3cbe2db481a362af890bc5a2f5ca7c878dc",
+        "size_bytes": 3896
+      }
+    }
+  ],
+  "classifier_inputs": {
+    "eeg_name": "EEG Fpz-Cz",
+    "eog_name": "EOG horizontal",
+    "emg_name": null,
+    "metadata": null
+  },
+  "epoch_duration_seconds": 30.0,
+  "primary_edge_wake_minutes": 30,
+  "sensitivity_edge_wake_minutes": [
+    0,
+    30,
+    60,
+    "all"
+  ],
+  "stages": [
+    "W",
+    "N1",
+    "N2",
+    "N3",
+    "REM"
+  ],
+  "bootstrap_seed": 20260713,
+  "bootstrap_resamples": 2000,
+  "metric_definitions": {
+    "accuracy": "fraction of aligned epochs with the same label",
+    "balanced_accuracy_present_stages": "mean recall over expert stages present in each recording",
+    "macro_recall_5_stages": "mean recall over W, N1, N2, N3 and REM; absent stages score zero",
+    "cohen_kappa": "Cohen's kappa over the fixed five-stage label set",
+    "macro_f1": "macro F1 over W, N1, N2, N3 and REM; absent stages score zero"
+  },
+  "code": {
+    "base_git_commit": "392e10e69cb22ba5d4a6ce387ec8408faa513f9e",
+    "source_sha256": {
+      "src/evaluate_staging.py": "dc7fcd84806d7aef9e139c088dcd91a48871ed37269202af6348f33ad455a6b4",
+      "src/make_figures.py": "9394739234dbc649e2467e36ba9d9d37b2e9e4f1d1b7e684e63a401249cbda55",
+      "requirements-lock.txt": "898b60b93ceddf1e374657470d68f132db7030495b31dffd980c6f5dda6e7331"
+    }
+  },
+  "python": "3.13.7",
+  "packages": {
+    "mne": "1.12.1",
+    "yasa": "0.7.0",
+    "pandas": "2.3.3",
+    "numpy": "2.4.6",
+    "scikit-learn": "1.9.0",
+    "lightgbm": "4.6.0",
+    "scipy": "1.18.0",
+    "matplotlib": "3.11.0",
+    "seaborn": "0.13.2"
+  }
+}

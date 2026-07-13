@@ -11,6 +11,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 os.environ.setdefault("_MNE_FAKE_HOME_DIR", str(PROJECT_ROOT))
+os.environ.setdefault("MNE_DONTWRITE_HOME", "true")
 os.environ.setdefault("MPLCONFIGDIR", str(PROJECT_ROOT / ".matplotlib"))
 os.environ.setdefault("XDG_CACHE_HOME", str(PROJECT_ROOT / ".cache"))
 
@@ -81,19 +82,27 @@ def integrate_relative_bandpower(
     if np.any(np.diff(frequencies) <= 0):
         raise ValueError("frequencies must be strictly increasing")
 
-    full_mask = (frequencies >= 0.5) & (frequencies <= 30.0)
-    if full_mask.sum() < 2:
-        raise ValueError("frequencies must cover at least two points between 0.5 and 30 Hz")
-    total_power = trapezoid(psd[full_mask], frequencies[full_mask])
+    def integrate_interval(lower: float, upper: float) -> float:
+        if lower >= upper:
+            raise ValueError("frequency band lower bound must be below its upper bound")
+        if frequencies[0] > lower or frequencies[-1] < upper:
+            raise ValueError(
+                f"frequency grid must cover the complete {lower:g}--{upper:g} Hz interval"
+            )
+        inside = (frequencies > lower) & (frequencies < upper)
+        interval_frequencies = np.concatenate(
+            ([lower], frequencies[inside], [upper])
+        )
+        interval_psd = np.interp(interval_frequencies, frequencies, psd)
+        return float(trapezoid(interval_psd, interval_frequencies))
+
+    total_power = integrate_interval(0.5, 30.0)
     if total_power <= 0:
         raise ValueError("total spectral power must be positive")
 
     output: dict[str, float] = {}
     for name, (lower, upper) in bands.items():
-        mask = (frequencies >= lower) & (frequencies <= upper)
-        if mask.sum() < 2:
-            raise ValueError(f"frequency grid is too sparse for the {name!r} band")
-        output[name] = float(trapezoid(psd[mask], frequencies[mask]) / total_power)
+        output[name] = integrate_interval(lower, upper) / total_power
     return output
 
 
@@ -139,6 +148,7 @@ def load_sleep_edf(
         psg_path,
         stim_channel="Event marker",
         infer_types=True,
+        include=["Fpz-Cz", "Pz-Oz"],
         preload=False,
         verbose="warning",
     )
@@ -197,8 +207,8 @@ def relative_bandpower(epochs: mne.Epochs) -> pd.DataFrame:
     """Compute channel- and stage-level relative spectral band power."""
     spectrum = epochs.compute_psd(
         method="welch",
-        fmin=0.5,
-        fmax=30.0,
+        fmin=0.0,
+        fmax=min(30.5, epochs.info["sfreq"] / 2),
         n_fft=512,
         n_overlap=256,
         window="hamming",
@@ -228,15 +238,44 @@ def relative_bandpower(epochs: mne.Epochs) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def event_hours(event_samples: np.ndarray, sampling_frequency: float) -> np.ndarray:
+    event_samples = np.asarray(event_samples, dtype=float)
+    if event_samples.ndim != 1 or event_samples.size == 0:
+        raise ValueError("event samples must be a non-empty one-dimensional array")
+    if sampling_frequency <= 0:
+        raise ValueError("sampling frequency must be positive")
+    return (event_samples - event_samples[0]) / sampling_frequency / 3600.0
+
+
+def contiguous_event_blocks(
+    event_samples: np.ndarray,
+    sampling_frequency: float,
+    epoch_seconds: float = 30.0,
+) -> list[np.ndarray]:
+    event_samples = np.asarray(event_samples, dtype=float)
+    if event_samples.ndim != 1 or event_samples.size == 0:
+        raise ValueError("event samples must be a non-empty one-dimensional array")
+    expected_step = sampling_frequency * epoch_seconds
+    if expected_step <= 0:
+        raise ValueError("sampling frequency and epoch duration must be positive")
+    breaks = np.flatnonzero(~np.isclose(np.diff(event_samples), expected_step)) + 1
+    return list(np.split(np.arange(event_samples.size), breaks))
+
+
 def save_hypnogram(epochs: mne.Epochs, destination: Path) -> None:
     """Save a compact hypnogram for retained epochs."""
     stage_to_y = {"W": 4, "REM": 3, "N1": 2, "N2": 1, "N3": 0}
     labels = [stage_name(code) for code in epochs.events[:, 2]]
     y = [stage_to_y[label] for label in labels]
-    hours = np.arange(len(y)) * 30.0 / 3600.0
+    hours = event_hours(epochs.events[:, 0], epochs.info["sfreq"])
 
     fig, ax = plt.subplots(figsize=(11, 3.8))
-    ax.step(hours, y, where="post", color="#2A6F97", linewidth=1.1)
+    for block in contiguous_event_blocks(epochs.events[:, 0], epochs.info["sfreq"]):
+        block_hours = hours[block]
+        block_stages = np.asarray(y)[block]
+        block_hours = np.append(block_hours, block_hours[-1] + 30.0 / 3600.0)
+        block_stages = np.append(block_stages, block_stages[-1])
+        ax.step(block_hours, block_stages, where="post", color="#2A6F97", linewidth=1.1)
     ax.set_yticks(list(stage_to_y.values()), labels=list(stage_to_y.keys()))
     ax.set_xlabel("Time from first retained epoch (hours)")
     ax.set_ylabel("Sleep stage")

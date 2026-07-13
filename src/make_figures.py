@@ -77,10 +77,98 @@ def make_hypnogram_figure(results_dir: Path) -> None:
     plt.close(fig)
 
 
+def make_recording_metrics_figure(results_dir: Path) -> None:
+    metrics = pd.read_csv(results_dir / "subject_metrics.csv")
+    columns = {
+        "balanced_accuracy_present_stages": "Balanced accuracy\n(present stages)",
+        "macro_recall_5_stages": "Macro recall\n(five stages)",
+        "cohen_kappa": "Cohen's kappa",
+        "macro_f1": "Macro F1",
+    }
+    long = metrics.melt(
+        id_vars="subject",
+        value_vars=list(columns),
+        var_name="metric",
+        value_name="value",
+    )
+    long["metric"] = long["metric"].map(columns)
+
+    fig, ax = plt.subplots(figsize=(7.2, 4.2))
+    sns.stripplot(
+        data=long,
+        x="value",
+        y="metric",
+        order=list(columns.values()),
+        color="#356a9a",
+        alpha=0.7,
+        size=6,
+        jitter=False,
+        ax=ax,
+    )
+    means = long.groupby("metric", sort=False)["value"].mean().reindex(columns.values())
+    ax.scatter(
+        means.to_numpy(),
+        range(len(means)),
+        marker="D",
+        s=55,
+        color="#b6463a",
+        label="Mean across recordings",
+        zorder=4,
+    )
+    ax.set(xlim=(0, 1), xlabel="Score", ylabel=None, title="Recording-level performance")
+    ax.legend(frameon=False, loc="upper left")
+    fig.tight_layout()
+    fig.savefig(results_dir / "recording_metrics.png", dpi=180)
+    plt.close(fig)
+
+
+def make_edge_wake_figure(results_dir: Path) -> None:
+    sensitivity = pd.read_csv(results_dir / "edge_wake_sensitivity.csv")
+    columns = {
+        "accuracy": "Accuracy",
+        "balanced_accuracy_present_stages": "Balanced accuracy (present stages)",
+        "macro_recall_5_stages": "Macro recall (five stages)",
+        "cohen_kappa": "Cohen's kappa",
+        "macro_f1": "Macro F1",
+    }
+    order = ["0", "30", "60", "all"]
+    sensitivity["edge_wake_minutes"] = sensitivity["edge_wake_minutes"].astype(str)
+    summary = (
+        sensitivity.groupby("edge_wake_minutes")[list(columns)]
+        .mean()
+        .reindex(order)
+        .rename(columns=columns)
+    )
+
+    fig, ax = plt.subplots(figsize=(7.2, 4.5))
+    for metric in summary.columns:
+        ax.plot(order, summary[metric], marker="o", linewidth=1.8, label=metric)
+    ax.axvline("30", color="0.45", linestyle="--", linewidth=1, label="Primary window")
+    ax.set(
+        ylim=(0.5, 0.92),
+        xlabel="Edge-Wake setting",
+        ylabel="Mean across recordings",
+        title="Sensitivity to the edge-Wake window",
+    )
+    ax.legend(
+        frameon=False,
+        ncol=3,
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.22),
+    )
+    fig.tight_layout()
+    fig.savefig(results_dir / "edge_wake_sensitivity.png", dpi=180, bbox_inches="tight")
+    plt.close(fig)
+
+
 def main(results_dir: Path) -> None:
     sns.set_theme(style="whitegrid", context="notebook")
     make_confusion_figure(results_dir)
-    make_hypnogram_figure(results_dir)
+    make_recording_metrics_figure(results_dir)
+    make_edge_wake_figure(results_dir)
+    epochs = pd.read_csv(results_dir / "epoch_predictions.csv", usecols=["subject"])
+    if epochs["subject"].nunique() <= 4:
+        make_hypnogram_figure(results_dir)
 
 
 if __name__ == "__main__":

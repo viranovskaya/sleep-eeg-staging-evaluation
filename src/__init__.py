@@ -1,1 +1,1 @@
-"""Analysis code for the Sleep-EDF technical-validation project."""
+"""Sleep-EDF staging and spectral-analysis code."""
