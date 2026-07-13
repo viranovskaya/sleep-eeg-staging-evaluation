@@ -80,7 +80,8 @@ def make_hypnogram_figure(results_dir: Path) -> None:
 def make_recording_metrics_figure(results_dir: Path) -> None:
     metrics = pd.read_csv(results_dir / "subject_metrics.csv")
     columns = {
-        "balanced_accuracy": "Balanced accuracy",
+        "balanced_accuracy_present_stages": "Balanced accuracy\n(present stages)",
+        "macro_recall_5_stages": "Macro recall\n(five stages)",
         "cohen_kappa": "Cohen's kappa",
         "macro_f1": "Macro F1",
     }
@@ -101,7 +102,7 @@ def make_recording_metrics_figure(results_dir: Path) -> None:
         color="#356a9a",
         alpha=0.7,
         size=6,
-        jitter=0.12,
+        jitter=False,
         ax=ax,
     )
     means = long.groupby("metric", sort=False)["value"].mean().reindex(columns.values())
@@ -125,7 +126,8 @@ def make_edge_wake_figure(results_dir: Path) -> None:
     sensitivity = pd.read_csv(results_dir / "edge_wake_sensitivity.csv")
     columns = {
         "accuracy": "Accuracy",
-        "balanced_accuracy": "Balanced accuracy",
+        "balanced_accuracy_present_stages": "Balanced accuracy (present stages)",
+        "macro_recall_5_stages": "Macro recall (five stages)",
         "cohen_kappa": "Cohen's kappa",
         "macro_f1": "Macro F1",
     }
@@ -148,9 +150,14 @@ def make_edge_wake_figure(results_dir: Path) -> None:
         ylabel="Mean across recordings",
         title="Sensitivity to the edge-Wake window",
     )
-    ax.legend(frameon=False, ncol=2)
+    ax.legend(
+        frameon=False,
+        ncol=3,
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.22),
+    )
     fig.tight_layout()
-    fig.savefig(results_dir / "edge_wake_sensitivity.png", dpi=180)
+    fig.savefig(results_dir / "edge_wake_sensitivity.png", dpi=180, bbox_inches="tight")
     plt.close(fig)
 
 
