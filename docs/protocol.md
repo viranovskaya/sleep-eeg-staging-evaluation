@@ -6,9 +6,9 @@ Evaluate automated five-stage sleep classification produced by YASA against the 
 
 ## Initial sample
 
-The technical-validation milestone uses two subjects and one recording per subject. This sample is not intended for substantive inference. It is used to validate file loading, channel selection, epoch alignment, stage mapping, and metric calculation.
+The first run uses two subjects and one recording per subject. I use this small sample to check file loading, channel selection, epoch alignment, stage mapping, and metric calculation. It is too small for a stable estimate of model performance.
 
-After manual validation, the confirmatory portfolio analysis will use a pre-specified larger subset. The sample size and exclusion rules will be fixed before inspecting the aggregate performance results.
+For the next run, I will choose the larger sample and write down the exclusion rules before inspecting the pooled results.
 
 ## Stage mapping
 
@@ -35,17 +35,11 @@ Sleep-EDF recordings can include many hours of wakefulness before and after the 
 - Stage-specific precision, recall, and F1
 - Confusion matrix
 
-## Quality-control gates
+## Checks before the larger run
 
-The project will not be described as a completed research output until all gates pass:
-
-1. Channel names and units are verified for every included record.
-2. Expert and predicted epochs have identical 30-second onsets after alignment.
-3. At least two hypnograms are visually inspected.
-4. Excluded epochs are counted and reported.
-5. The pipeline runs from a clean environment using documented commands.
-6. A limitations section addresses historical R&K annotations, channel mismatch, model provenance, and sample selection.
-
-## Authorship and claims
-
-This is an independent reproducibility/validation portfolio project using public data. It is not a new clinical validation study and will not be presented as an institutional affiliation. Any later external contribution or collaboration will be credited separately.
+1. Check channel names and units for every record.
+2. Confirm that expert and predicted epochs have the same 30-second onsets after alignment.
+3. Inspect paired hypnograms.
+4. Count and report all excluded epochs.
+5. Run the pipeline in a clean environment using the documented commands.
+6. Report the limitations of the historical R&K labels, channel mismatch, pretrained model, and sample selection.

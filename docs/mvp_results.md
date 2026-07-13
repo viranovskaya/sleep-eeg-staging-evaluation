@@ -1,8 +1,8 @@
-# Technical-validation results
+# First staging results
 
 ## Scope
 
-This milestone tests whether the complete pipeline can load Sleep-EDF data, generate YASA sleep-stage predictions, align them to expert annotations, calculate evaluation metrics, and produce interpretable figures. It contains two subjects and is not intended for population-level inference.
+I first ran the complete pipeline on two Sleep-EDF recordings. The aim was to check whether the code could load the data, generate YASA predictions, align them with expert labels, calculate the metrics, and produce readable figures.
 
 ## Analysis window and sample
 
@@ -22,7 +22,7 @@ Pooled stage-specific F1 scores were 0.816 for Wake, 0.511 for N1, 0.872 for N2,
 
 ![Expert and automated hypnograms](../results/hypnogram_comparison.png)
 
-## Quality-control checks passed
+## Checks
 
 - All four source-file SHA-1 values matched the checksums supplied by MNE's Sleep-EDF registry.
 - Expert annotations mapped exactly to 30-second epoch indices.
@@ -32,7 +32,7 @@ Pooled stage-specific F1 scores were 0.816 for Wake, 0.511 for N1, 0.872 for N2,
 
 ## Limitations
 
-- Two subjects are sufficient for pipeline validation but not for stable scientific estimates.
+- Two subjects are enough to check the code, but not to estimate performance in a population.
 - Epochs from the same night are not statistically independent; no confidence intervals or hypothesis tests are reported.
 - Sleep-EDF uses historical Rechtschaffen and Kales scoring. Stages 3 and 4 were combined as N3 for the five-stage comparison.
 - Performance is specific to the available Fpz-Cz EEG and horizontal EOG channels and the packaged pretrained YASA model.
@@ -40,4 +40,4 @@ Pooled stage-specific F1 scores were 0.816 for Wake, 0.511 for N1, 0.872 for N2,
 
 ## Next milestone
 
-Pre-specify a larger subset before examining its aggregate results, add automated tests for the alignment and edge-Wake logic, record the complete software environment, and archive the reviewed release with a persistent identifier.
+Choose a larger subset before looking at its pooled results, add tests for alignment and edge-Wake handling, and record the complete software environment for a versioned release.

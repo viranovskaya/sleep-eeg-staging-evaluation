@@ -4,13 +4,13 @@
 
 How does relative EEG spectral power differ across expert-annotated sleep stages in a public whole-night Sleep-EDF recording?
 
-This module is an exploratory companion to the automated-staging evaluation. It describes the expert-labelled signal rather than assessing the YASA classifier.
+This is a separate descriptive analysis of the expert-labelled signal. It does not assess the YASA classifier.
 
 ## Dataset and epochs
 
 The command requests one recording from the public Sleep Cassette subset of Sleep-EDF Expanded. Expert annotations are converted into non-overlapping 30-second epochs. Wake, N1, N2, N3, and REM are retained; historical stages 3 and 4 are merged as N3. Movement and unscored intervals are excluded.
 
-The analysis window retains sleep plus 30 minutes of Wake on either side, matching the staging-evaluation boundary and preventing long edge-Wake periods from dominating the descriptive output. Only channels recognized as EEG are analysed. Raw EDF files are downloaded to the ignored `data/` directory and are never committed.
+The analysis window keeps sleep plus 30 minutes of Wake on either side, as in the staging analysis. This prevents long periods of edge Wake from dominating the result. Only channels recognised as EEG are analysed. The EDF files are downloaded to the ignored `data/` directory.
 
 ## Spectral method
 
@@ -24,7 +24,7 @@ Power spectral density is estimated for every retained epoch and EEG channel usi
 | Sigma | 12--16 Hz |
 | Beta | 16--30 Hz |
 
-Band limits are descriptive conventions rather than universal physiological definitions.
+These band limits are analysis choices, not universal physiological definitions.
 
 ## Outputs
 
@@ -34,4 +34,4 @@ Band limits are descriptive conventions rather than universal physiological defi
 - `relative_bandpower.png`: mean spectral profile across EEG channels;
 - `run_metadata.json`: parameters, package versions, input filenames, and run time.
 
-Generated spectral outputs remain ignored until they have been independently reviewed. A one-recording run is a technical demonstration and does not support population inference.
+I will add the spectral results after checking a complete run. One recording can show whether the analysis works, but it cannot support population-level conclusions.
