@@ -17,7 +17,7 @@ These two recordings were enough to check the pipeline and find the main disagre
 
 ## Status
 
-The two-recording staging run is complete. The spectral code is implemented and tested, but I have not yet reviewed and added its generated results. The next staging step is to fix the larger sample before looking at its pooled metrics.
+The two-recording staging run is complete. The spectral code is implemented and tested, but I have not yet reviewed and added its generated results. The next staging step is the locked 20-recording evaluation described in [`docs/evaluation_protocol_v0_1.md`](docs/evaluation_protocol_v0_1.md).
 
 The full numbers are in [the first results note](docs/mvp_results.md). The spectral method is described [separately](docs/spectral_analysis.md).
 
@@ -39,6 +39,7 @@ I use Sleep-EDF Database Expanded, PhysioNet, version 1.0.0. The scripts downloa
 src/                 Analysis code
 results/             Reviewed staging outputs; ignored spectral outputs
 docs/                Protocol, methods, results, and limitations
+config/              Fixed evaluation sample manifests
 data/                 Downloaded source data (never committed)
 .github/workflows/   Automated test workflow
 ```

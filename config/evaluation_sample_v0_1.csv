@@ -1,0 +1,23 @@
+subject,recording,split,selection_status,notes
+0,1,development,previously_reviewed,Used only for pipeline development and the two-recording MVP.
+1,1,development,previously_reviewed,Used only for pipeline development and the two-recording MVP.
+4,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+8,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+11,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+19,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+21,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+22,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+23,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+31,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+33,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+34,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+38,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+43,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+61,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+62,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+63,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+64,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+66,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+67,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+74,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.
+81,1,evaluation,locked_before_results,Selected with a fixed random seed before inspecting v0.1.0 metrics.

@@ -8,7 +8,7 @@ Evaluate automated five-stage sleep classification produced by YASA against the 
 
 The first run uses two subjects and one recording per subject. I use this small sample to check file loading, channel selection, epoch alignment, stage mapping, and metric calculation. It is too small for a stable estimate of model performance.
 
-For the next run, I will choose the larger sample and write down the exclusion rules before inspecting the pooled results.
+For the next run, I locked a 20-recording evaluation sample before inspecting its pooled results. The v0.1.0 protocol and sample manifest are in [`evaluation_protocol_v0_1.md`](evaluation_protocol_v0_1.md) and [`config/evaluation_sample_v0_1.csv`](../config/evaluation_sample_v0_1.csv).
 
 ## Stage mapping
 
