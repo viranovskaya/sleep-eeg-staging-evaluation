@@ -1,27 +1,343 @@
 {
-  "subjects": [
-    4,
-    8,
-    11,
-    19,
-    21,
-    22,
-    23,
-    31,
-    33,
-    34,
-    38,
-    43,
-    61,
-    62,
-    63,
-    64,
-    66,
-    67,
-    74,
-    81
+  "project": "sleep-eeg-staging-evaluation",
+  "analysis": "yasa-versus-expert-five-stage-evaluation",
+  "run_utc": "2026-07-13T20:18:26.380518+00:00",
+  "dataset": {
+    "name": "Sleep-EDF Database Expanded",
+    "subset": "Sleep Cassette age study",
+    "version": "1.0.0",
+    "url": "https://physionet.org/content/sleep-edfx/1.0.0/"
+  },
+  "sample": {
+    "subjects": [
+      4,
+      8,
+      11,
+      19,
+      21,
+      22,
+      23,
+      31,
+      33,
+      34,
+      38,
+      43,
+      61,
+      62,
+      63,
+      64,
+      66,
+      67,
+      74,
+      81
+    ],
+    "recording": 1,
+    "manifest": "config/evaluation_sample_v0_1.csv",
+    "manifest_sha256": "73af4684a90ea45c24b5d758dabb327f04994f6d9081bb512d51c4e0835fe595",
+    "split": "evaluation",
+    "demographics": {
+      "n": 20,
+      "age_mean": 62.9,
+      "age_sd": 24.56977175739584,
+      "age_range": [
+        25.0,
+        101.0
+      ],
+      "sex_counts": {
+        "female": 13,
+        "male": 7
+      }
+    }
+  },
+  "input_files": [
+    {
+      "subject": 4,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4041E0-PSG.edf",
+        "sha1": "04d2b88d25f2ae4a65ba44cd9145bd12800a0e20",
+        "size_bytes": 46878848
+      },
+      "hypnogram": {
+        "filename": "SC4041EC-Hypnogram.edf",
+        "sha1": "f148821669bd3588187b3b430bd79adf569f86d1",
+        "size_bytes": 4830
+      }
+    },
+    {
+      "subject": 8,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4081E0-PSG.edf",
+        "sha1": "0e1cc2c4e1da14ab94515e3e7e75e8ad30ec99cb",
+        "size_bytes": 51001088
+      },
+      "hypnogram": {
+        "filename": "SC4081EC-Hypnogram.edf",
+        "sha1": "9ec663ffa5c17afcaca59d7829d77b9165102237",
+        "size_bytes": 4306
+      }
+    },
+    {
+      "subject": 11,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4111E0-PSG.edf",
+        "sha1": "e490956b4dce01c46ba88a2b847f091bb54ea16e",
+        "size_bytes": 48192128
+      },
+      "hypnogram": {
+        "filename": "SC4111EC-Hypnogram.edf",
+        "sha1": "12db1920e2f6083c8ab1f2c24fe35dfa03715e4a",
+        "size_bytes": 3876
+      }
+    },
+    {
+      "subject": 19,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4191E0-PSG.edf",
+        "sha1": "d6da621dbb20dec3494a38c7d2a0363793ac5ebe",
+        "size_bytes": 50599808
+      },
+      "hypnogram": {
+        "filename": "SC4191EP-Hypnogram.edf",
+        "sha1": "defc7b9368c2d3c4ab4a294757843825a83cdb5d",
+        "size_bytes": 5282
+      }
+    },
+    {
+      "subject": 21,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4211E0-PSG.edf",
+        "sha1": "c106ad072dbc975a3742f7eff151219870f0c794",
+        "size_bytes": 51256448
+      },
+      "hypnogram": {
+        "filename": "SC4211EC-Hypnogram.edf",
+        "sha1": "9126937ea8a414d6ae9bc4a4194d841a891fa8a8",
+        "size_bytes": 3658
+      }
+    },
+    {
+      "subject": 22,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4221E0-PSG.edf",
+        "sha1": "8733ea022d3778259a436507156cf3360ad8be06",
+        "size_bytes": 49250048
+      },
+      "hypnogram": {
+        "filename": "SC4221EJ-Hypnogram.edf",
+        "sha1": "b158eda4f81772095c129be77f8e60ec9d81b884",
+        "size_bytes": 4896
+      }
+    },
+    {
+      "subject": 23,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4231E0-PSG.edf",
+        "sha1": "d96f1f35b2f77c7de706036c6e4114139e07b307",
+        "size_bytes": 50089088
+      },
+      "hypnogram": {
+        "filename": "SC4231EJ-Hypnogram.edf",
+        "sha1": "9f6df70676d6cddcf069ceb7f408a7989af99ce2",
+        "size_bytes": 3520
+      }
+    },
+    {
+      "subject": 31,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4311E0-PSG.edf",
+        "sha1": "b62f5104bddf452f4700c85997e51bec17f0243b",
+        "size_bytes": 48702848
+      },
+      "hypnogram": {
+        "filename": "SC4311EC-Hypnogram.edf",
+        "sha1": "812c34844e834b97949019741fa7f835d973725d",
+        "size_bytes": 4252
+      }
+    },
+    {
+      "subject": 33,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4331F0-PSG.edf",
+        "sha1": "f37cb4df27286e38c604cae943169ff29b1473fc",
+        "size_bytes": 51256448
+      },
+      "hypnogram": {
+        "filename": "SC4331FV-Hypnogram.edf",
+        "sha1": "ca943e2b73c6404f929c372ebd817b7b3b71b4dd",
+        "size_bytes": 3790
+      }
+    },
+    {
+      "subject": 34,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4341F0-PSG.edf",
+        "sha1": "17de25c8f023fe632aa403a6d9525c1cde8eaef5",
+        "size_bytes": 50162048
+      },
+      "hypnogram": {
+        "filename": "SC4341FA-Hypnogram.edf",
+        "sha1": "81ba3c0d8320c9ee306f678b4bc9e6e266165886",
+        "size_bytes": 1872
+      }
+    },
+    {
+      "subject": 38,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4381F0-PSG.edf",
+        "sha1": "6098d2b501b82ca0ddc8893547c6990e204e8ba6",
+        "size_bytes": 50162048
+      },
+      "hypnogram": {
+        "filename": "SC4381FC-Hypnogram.edf",
+        "sha1": "fdbf653a4a675843c97d0a76ef5e4cebf5d2dbcb",
+        "size_bytes": 2408
+      }
+    },
+    {
+      "subject": 43,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4431E0-PSG.edf",
+        "sha1": "194ae942cf80764e81b4cdabeed9e5a57916aab3",
+        "size_bytes": 51256448
+      },
+      "hypnogram": {
+        "filename": "SC4431EM-Hypnogram.edf",
+        "sha1": "497ad7e671edab6e7adc9d35a6aa45b7fd9a706b",
+        "size_bytes": 3454
+      }
+    },
+    {
+      "subject": 61,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4611E0-PSG.edf",
+        "sha1": "2cc6e418c0b7af472aa34d2bbd5ece85bdb6a879",
+        "size_bytes": 48338048
+      },
+      "hypnogram": {
+        "filename": "SC4611EG-Hypnogram.edf",
+        "sha1": "f5715ab48f24221c28c1d5c45508c8bb58c912ec",
+        "size_bytes": 7236
+      }
+    },
+    {
+      "subject": 62,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4621E0-PSG.edf",
+        "sha1": "31cd2cae56977c6b872311f2a6e60827748b973d",
+        "size_bytes": 47644928
+      },
+      "hypnogram": {
+        "filename": "SC4621EV-Hypnogram.edf",
+        "sha1": "7acc5296b33ca4eee8d6577064c8c651ee96e527",
+        "size_bytes": 5608
+      }
+    },
+    {
+      "subject": 63,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4631E0-PSG.edf",
+        "sha1": "6dfb32aa4c94968a52d61b90a38573d178669bfb",
+        "size_bytes": 50307968
+      },
+      "hypnogram": {
+        "filename": "SC4631EM-Hypnogram.edf",
+        "sha1": "48e28f93fc71ffc539776196f9d9d1365415e0b4",
+        "size_bytes": 4734
+      }
+    },
+    {
+      "subject": 64,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4641E0-PSG.edf",
+        "sha1": "0e5d109a929490cbecf59573577a97df07a05cd0",
+        "size_bytes": 48885248
+      },
+      "hypnogram": {
+        "filename": "SC4641EP-Hypnogram.edf",
+        "sha1": "7b896dc5b34d71381d8462001dc3e05b145cf48c",
+        "size_bytes": 2896
+      }
+    },
+    {
+      "subject": 66,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4661E0-PSG.edf",
+        "sha1": "c6057505d2acf7b08371e266cf0fca1bfeb1e4e1",
+        "size_bytes": 49979648
+      },
+      "hypnogram": {
+        "filename": "SC4661EJ-Hypnogram.edf",
+        "sha1": "06474e72126d2a00c1968e70730e1deac060f94e",
+        "size_bytes": 6076
+      }
+    },
+    {
+      "subject": 67,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4671G0-PSG.edf",
+        "sha1": "4357aa9fedf0b53896d41e5dccd7b525f7212177",
+        "size_bytes": 50709248
+      },
+      "hypnogram": {
+        "filename": "SC4671GJ-Hypnogram.edf",
+        "sha1": "459889157743c434933194446af5168cb145dfcb",
+        "size_bytes": 6636
+      }
+    },
+    {
+      "subject": 74,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4741E0-PSG.edf",
+        "sha1": "e6ff7462f4ce401e9aff9b3d9c93f0710bc37678",
+        "size_bytes": 49067648
+      },
+      "hypnogram": {
+        "filename": "SC4741EA-Hypnogram.edf",
+        "sha1": "bda4d1ab190f4160ec7a3f4420e30d718f02369e",
+        "size_bytes": 2974
+      }
+    },
+    {
+      "subject": 81,
+      "recording": 1,
+      "psg": {
+        "filename": "SC4811G0-PSG.edf",
+        "sha1": "dcae3307af54ccf5349945e2fa493464de0a5da2",
+        "size_bytes": 43814528
+      },
+      "hypnogram": {
+        "filename": "SC4811GG-Hypnogram.edf",
+        "sha1": "2406ce37b86fc3c7492a3ebe89ae58d15686b33d",
+        "size_bytes": 6512
+      }
+    }
   ],
-  "recording": 1,
+  "classifier_inputs": {
+    "eeg_name": "EEG Fpz-Cz",
+    "eog_name": "EOG horizontal",
+    "emg_name": null,
+    "metadata": null
+  },
+  "epoch_duration_seconds": 30.0,
   "primary_edge_wake_minutes": 30,
   "sensitivity_edge_wake_minutes": [
     0,
@@ -38,6 +354,21 @@
   ],
   "bootstrap_seed": 20260713,
   "bootstrap_resamples": 2000,
+  "metric_definitions": {
+    "accuracy": "fraction of aligned epochs with the same label",
+    "balanced_accuracy_present_stages": "mean recall over expert stages present in each recording",
+    "macro_recall_5_stages": "mean recall over W, N1, N2, N3 and REM; absent stages score zero",
+    "cohen_kappa": "Cohen's kappa over the fixed five-stage label set",
+    "macro_f1": "macro F1 over W, N1, N2, N3 and REM; absent stages score zero"
+  },
+  "code": {
+    "base_git_commit": "392e10e69cb22ba5d4a6ce387ec8408faa513f9e",
+    "source_sha256": {
+      "src/evaluate_staging.py": "dc7fcd84806d7aef9e139c088dcd91a48871ed37269202af6348f33ad455a6b4",
+      "src/make_figures.py": "9394739234dbc649e2467e36ba9d9d37b2e9e4f1d1b7e684e63a401249cbda55",
+      "requirements-lock.txt": "898b60b93ceddf1e374657470d68f132db7030495b31dffd980c6f5dda6e7331"
+    }
+  },
   "python": "3.13.7",
   "packages": {
     "mne": "1.12.1",
@@ -45,6 +376,9 @@
     "pandas": "2.3.3",
     "numpy": "2.4.6",
     "scikit-learn": "1.9.0",
-    "lightgbm": "4.6.0"
+    "lightgbm": "4.6.0",
+    "scipy": "1.18.0",
+    "matplotlib": "3.11.0",
+    "seaborn": "0.13.2"
   }
 }
