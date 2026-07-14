@@ -4,6 +4,7 @@ title: "Sleep-EEG Staging Evaluation and Spectral Analysis"
 type: software
 version: 0.3.1
 date-released: 2026-07-14
+doi: "10.5281/zenodo.21354517"
 authors:
   - family-names: Agafonova
     given-names: Daria
