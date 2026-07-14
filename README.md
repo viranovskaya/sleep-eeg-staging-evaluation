@@ -1,5 +1,7 @@
 # Sleep-EEG staging evaluation
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21354517.svg)](https://doi.org/10.5281/zenodo.21354517)
+
 I compared YASA sleep-stage predictions with expert annotations from Sleep-EDF Expanded. The aim was to see not only how often the labels agree, but where the model fails and how much the result depends on the amount of Wake kept at the edges of a recording.
 
 ## Main result
@@ -23,6 +25,8 @@ The balanced accuracy above is calculated from the stages present in each expert
 - repeated the analysis with 0, 30, 60 minutes and all available edge Wake.
 
 The exact sample and selection rule are recorded in the [analysis protocol](docs/evaluation_protocol_v0_1.md). Subjects 0 and 1 were used earlier while I was checking the code; their results are kept separately in [results/pilot](results/pilot) and the [pilot note](docs/pilot_results.md).
+
+The `v0.3.1` release is archived on [Zenodo](https://doi.org/10.5281/zenodo.21354517).
 
 ## Data
 
