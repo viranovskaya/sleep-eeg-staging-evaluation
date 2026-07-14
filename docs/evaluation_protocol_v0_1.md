@@ -44,4 +44,4 @@ I also reran the metrics with 0, 30 and 60 minutes of edge Wake, and with all sc
 
 ## Frozen 20-recording evaluation
 
-This is the first frozen larger-sample evaluation in the repository. The files keep `evaluation_v0_1` as the analysis label; the GitHub release is v0.3.0. It includes the sample manifest, per-recording and pooled tables, uncertainty and edge-Wake results, figures, tests, input checksums, the exact environment and this record of the analysis choices. After I have checked the release on GitHub, I can archive it on Zenodo.
+This is the first frozen larger-sample evaluation in the repository. The files keep `evaluation_v0_1` as the analysis label. The analysis was first released as v0.3.0; v0.3.1 adds explicit source-data attribution and a test that keeps the saved provenance hashes in sync. The release includes the sample manifest, per-recording and pooled tables, uncertainty and edge-Wake results, figures, tests, input checksums, the exact environment and this record of the analysis choices.

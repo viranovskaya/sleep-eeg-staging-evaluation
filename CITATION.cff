@@ -2,10 +2,11 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it using the metadata below."
 title: "Sleep-EEG Staging Evaluation and Spectral Analysis"
 type: software
-version: 0.3.0
-date-released: 2026-07-13
+version: 0.3.1
+date-released: 2026-07-14
 authors:
   - family-names: Agafonova
     given-names: Daria
+    orcid: "https://orcid.org/0009-0009-3819-9362"
 repository-code: "https://github.com/viranovskaya/sleep-eeg-staging-evaluation"
 license: MIT
