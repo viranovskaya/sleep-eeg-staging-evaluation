@@ -95,7 +95,7 @@
     "source_sha256": {
       "src/evaluate_staging.py": "dc7fcd84806d7aef9e139c088dcd91a48871ed37269202af6348f33ad455a6b4",
       "src/make_figures.py": "9394739234dbc649e2467e36ba9d9d37b2e9e4f1d1b7e684e63a401249cbda55",
-      "requirements-lock.txt": "898b60b93ceddf1e374657470d68f132db7030495b31dffd980c6f5dda6e7331"
+      "requirements-lock.txt": "03437a0feaec62c62272bdf2206af6497107682961342ffb7965c26d164d01b7"
     }
   },
   "python": "3.13.7",

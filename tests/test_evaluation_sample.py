@@ -1,3 +1,5 @@
+import hashlib
+import json
 import random
 from pathlib import Path
 
@@ -45,3 +47,11 @@ def test_v0_1_sample_can_be_recreated_from_the_recorded_rule() -> None:
     manifest = pd.read_csv(Path("config") / "evaluation_sample_v0_1.csv")
     evaluation = manifest.loc[manifest["split"] == "evaluation", "subject"].tolist()
     assert selected == evaluation
+
+
+def test_saved_run_metadata_matches_release_files() -> None:
+    for result_dir in [Path("results/pilot"), Path("results/evaluation_v0_1")]:
+        metadata = json.loads((result_dir / "run_metadata.json").read_text())
+        for relative_path, expected_hash in metadata["code"]["source_sha256"].items():
+            actual_hash = hashlib.sha256(Path(relative_path).read_bytes()).hexdigest()
+            assert actual_hash == expected_hash, relative_path

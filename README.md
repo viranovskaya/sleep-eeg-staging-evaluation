@@ -49,7 +49,7 @@ python src/make_figures.py --results-dir results/evaluation_v0_1
 
 On macOS, LightGBM also requires OpenMP (`brew install libomp`). The first run downloads the selected files from PhysioNet.
 
-`requirements.txt` gives the supported package ranges. `requirements-lock.txt` records the exact environment used for the saved 20-recording results.
+`requirements.txt` gives the supported package ranges. `requirements-lock.txt` records the exact environment used for the saved 20-recording results. The saved metadata includes hashes for the analysis code and this lock file, and the tests check that those hashes still match the release.
 
 Tests:
 
@@ -83,7 +83,15 @@ docs/                        analysis choices, results and limitations
 tests/                       small tests for alignment, metrics and spectral code
 ```
 
+## License and data attribution
+
+The original code is released under the MIT license. The saved results are
+derived from Sleep-EDF Expanded, whose files are distributed by PhysioNet
+under the Open Data Commons Attribution License v1.0. Raw EDF files are not
+included. The source DOI, license and attribution notes are in
+[`DATA_AND_ATTRIBUTION.md`](DATA_AND_ATTRIBUTION.md).
+
 ## Software
 
-- [YASA](https://github.com/raphaelvallat/yasa)
+- [YASA](https://github.com/raphaelvallat/yasa) and its [automated sleep-staging paper](https://doi.org/10.7554/eLife.70092)
 - [MNE-Python](https://mne.tools/)
