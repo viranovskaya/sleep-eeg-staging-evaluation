@@ -2,46 +2,71 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21354517.svg)](https://doi.org/10.5281/zenodo.21354517)
 
-I compared YASA sleep-stage predictions with expert annotations from Sleep-EDF Expanded. The aim was to see not only how often the labels agree, but where the model fails and how much the result depends on the amount of Wake kept at the edges of a recording.
+## Purpose
 
-## Main result
+This repository evaluates YASA sleep-stage predictions against expert Sleep-EDF annotations with recording-level metrics and an explicit edge-Wake sensitivity analysis.
 
-The evaluation includes 20 recordings and 28,259 aligned 30-second epochs. The main recording-level summaries were balanced accuracy of 0.706 and Cohen's kappa of 0.674. Fixed-five-stage macro recall was 0.678 and macro F1 was 0.630.
+## Scientific question
 
-N1 was the main source of disagreement. Its pooled recall was 0.155 and F1 was 0.239; most expert N1 epochs were labelled as N2 or Wake by YASA.
+How well does the packaged five-stage YASA classifier agree with expert scoring in a fixed external sample, where does disagreement occur, and how sensitive are summary metrics to Wake retained at recording edges?
+
+## What I implemented
+
+I implemented the download and alignment workflow, five-stage label mapping, per-recording and pooled metrics, bootstrap intervals, edge-Wake analysis, figures, and provenance records. The main analysis:
+
+- compares Wake, N1, N2, N3, and REM;
+- combines historical R&K stages 3 and 4 as N3;
+- excludes Movement and unscored intervals;
+- keeps sleep plus 30 minutes of Wake on each side;
+- reports recording-level means before pooled epoch summaries.
+
+I also implemented a separate descriptive relative-band-power analysis; it is tested but is not part of the staging result below.
+
+## Data and sample
+
+The source is [Sleep-EDF Database Expanded v1.0.0](https://physionet.org/content/sleep-edfx/1.0.0/). The evaluation uses recording 1 from 20 age-study subjects selected before pooled analysis: 28,259 aligned 30-second epochs, mean age 62.9 years (range 25--101), 13 female and 7 male records.
+
+Raw EDF files are downloaded from PhysioNet and are not stored here. Subjects 0 and 1 were used earlier for development and remain separate in [`results/pilot`](results/pilot).
+
+## Validated outputs
+
+For the 20-recording evaluation:
+
+| Metric | Recording-level mean |
+|---|---:|
+| Balanced accuracy, stages present | 0.706 |
+| Cohen's kappa | 0.674 |
+| Fixed-five-stage macro recall | 0.678 |
+| Fixed-five-stage macro F1 | 0.630 |
+
+N1 was the main disagreement: pooled recall was 0.155 and F1 was 0.239. Full intervals, stage metrics, and edge-Wake results are in the [results note](docs/evaluation_results_v0_1.md) and [`results/evaluation_v0_1`](results/evaluation_v0_1).
 
 ![Row-normalized confusion matrix](results/evaluation_v0_1/pooled_confusion_matrix.png)
 
-The balanced accuracy above is calculated from the stages present in each expert-scored recording. Four recordings contained no expert N3. The fixed-five-stage macro recall counts the absent stage as zero. The full comparison, confidence intervals and edge-Wake analysis are in the [results note](docs/evaluation_results_v0_1.md).
+## Reproducibility
 
-## What I did
+[`requirements-lock.txt`](requirements-lock.txt) records the exact environment used for the saved 20-recording run. [`requirements.txt`](requirements.txt) defines supported ranges; [`requirements-dev.txt`](requirements-dev.txt) adds the test dependency.
 
-- used recording 1 from 20 Sleep-EDF age-study subjects selected before the pooled analysis;
-- compared Wake, N1, N2, N3 and REM;
-- combined the historical R&K stages 3 and 4 as N3;
-- excluded Movement and unscored intervals;
-- kept sleep plus 30 minutes of Wake on each side for the main analysis;
-- calculated metrics for each recording before averaging them;
-- repeated the analysis with 0, 30, 60 minutes and all available edge Wake.
+`run_metadata.json` records the sample, source filenames and hashes, classifier inputs, metric definitions, source hashes, and package versions. Tests verify alignment, metric behavior, figures, sample selection, and saved provenance hashes. CI runs those tests but does not download and recompute all 20 recordings.
 
-The exact sample and selection rule are recorded in the [analysis protocol](docs/evaluation_protocol_v0_1.md). Subjects 0 and 1 were used earlier while I was checking the code; their results are kept separately in [results/pilot](results/pilot) and the [pilot note](docs/pilot_results.md).
+## Limitations
 
-The `v0.3.1` release is archived on [Zenodo](https://doi.org/10.5281/zenodo.21354517).
+- This is an external evaluation of one packaged classifier on one public sample, not training or clinical validation.
+- Sleep-EDF uses historical R&K scoring rather than current AASM scoring.
+- Four recordings contain no expert N3, so present-stage and fixed-five-stage summaries differ.
+- The classifier received Fpz-Cz EEG and horizontal EOG, not EMG, age, or sex.
+- YASA's stored label encoder produces a known version-compatibility warning; labels, counts, and epoch alignment were checked after the run.
 
-## Data
+## Installation and run
 
-The data are from [Sleep-EDF Database Expanded, version 1.0.0](https://physionet.org/content/sleep-edfx/1.0.0/). The scripts download the original EDF files from PhysioNet. Raw recordings are not stored in this repository.
-
-The selected subjects had a mean age of 62.9 years (range 25--101); 13 were female and 7 male. These fields come from the Sleep-EDF age-study records and are stored in the sample manifest.
-
-YASA uses the Fpz-Cz EEG derivation and horizontal EOG available in this subset. I did not provide EMG, age or sex to the classifier. The evaluation is external to the datasets used to train YASA; it is not model training or clinical validation.
-
-## Run the staging analysis
+For the exact saved-result environment:
 
 ```bash
+git clone https://github.com/viranovskaya/sleep-eeg-staging-evaluation.git
+cd sleep-eeg-staging-evaluation
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+python -m pip install -r requirements-lock.txt
 python src/evaluate_staging.py \
   --sample-manifest config/evaluation_sample_v0_1.csv \
   --sample-split evaluation \
@@ -51,51 +76,16 @@ python src/evaluate_staging.py \
 python src/make_figures.py --results-dir results/evaluation_v0_1
 ```
 
-On macOS, LightGBM also requires OpenMP (`brew install libomp`). The first run downloads the selected files from PhysioNet.
+The first analysis run downloads the selected PhysioNet files. On macOS, LightGBM also requires OpenMP (`brew install libomp`). Run tests with `python -m pytest -q` after installing `requirements-dev.txt`.
 
-`requirements.txt` gives the supported package ranges. `requirements-lock.txt` records the exact environment used for the saved 20-recording results. The saved metadata includes hashes for the analysis code and this lock file, and the tests check that those hashes still match the release.
+## Citation
 
-Tests:
+Release `v0.3.1` is archived at [Zenodo DOI 10.5281/zenodo.21354517](https://doi.org/10.5281/zenodo.21354517). Citation metadata is in [`CITATION.cff`](CITATION.cff); data attribution is in [`DATA_AND_ATTRIBUTION.md`](DATA_AND_ATTRIBUTION.md).
 
-```bash
-pip install -r requirements-dev.txt
-python -m pytest
-```
+## Current status
 
-## Spectral analysis
-
-The repository also contains a separate descriptive analysis of relative EEG band power across expert-labelled stages:
-
-```bash
-python src/spectral_analysis.py \
-  --subject 0 \
-  --recording 1 \
-  --data-dir data \
-  --output-dir results/spectral/sub-00-night-1
-```
-
-The spectral code is tested, but its outputs are not part of the staging result reported above. The method is described in [docs/spectral_analysis.md](docs/spectral_analysis.md).
-
-## Files
-
-```text
-src/                         analysis and figure code
-config/                      selected development and evaluation recordings
-results/pilot/               first two recordings used while checking the code
-results/evaluation_v0_1/     20-recording results
-docs/                        analysis choices, results and limitations
-tests/                       small tests for alignment, metrics and spectral code
-```
-
-## License and data attribution
-
-The original code is released under the MIT license. The saved results are
-derived from Sleep-EDF Expanded, whose files are distributed by PhysioNet
-under the Open Data Commons Attribution License v1.0. Raw EDF files are not
-included. The source DOI, license and attribution notes are in
-[`DATA_AND_ATTRIBUTION.md`](DATA_AND_ATTRIBUTION.md).
-
-## Software
-
-- [YASA](https://github.com/raphaelvallat/yasa) and its [automated sleep-staging paper](https://doi.org/10.7554/eLife.70092)
-- [MNE-Python](https://mne.tools/)
+- **Implemented:** staging evaluation, edge-Wake sensitivity, figures, and separate spectral code.
+- **Tested:** alignment, metrics, sample rules, figures, and spectral functions in CI.
+- **Evaluated:** 20 fixed Sleep-EDF recordings; two earlier records remain a separate pilot.
+- **Planned:** no retraining or clinical deployment is part of the current repository.
+- **Not yet validated:** other cohorts, current AASM annotations, clinical use, or full 20-recording regeneration in CI.
